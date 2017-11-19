@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "UTF-8">
+      <title>Prueba de Alegra con ElectronJS</title>
+      <link rel="stylesheet"
+         href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
+
+      <style type = "text/css">
+         #contact-list {
+            height: 150px;
+            overflow-y: auto;
+         }
+         #divButtons {
+           margin-top: 50px;
+           margin-bottom: 50px;
+         }
+      </style>
+   </head>
+
+   <body>
+      <div class="container">
+         <div id="divButtons" class="text-center">
+            <button class="btn btn-primary" id="start">Comenzar</button>
+            <button class="btn btn-danger hidden" id="stop">Terminar</button>
+         </div>
+
+         <div id="contact-list">
+            <table class="table-striped" id="contact-table">
+               <tr>
+                  <th class="col-xs-2">S. No.</th>
+                  <th class="col-xs-4">Name</th>
+                  <th class="col-xs-6">Email</th>
+               </tr>
+            </table>
+         </div>
+
+         <script src = "./view.js" ></script>
+      </div>
+   </body>
+</html>
