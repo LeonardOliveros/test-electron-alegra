@@ -27,7 +27,7 @@ class filesRepository {
       // Se lee el archivo y se convierte en array
       const data = fs.readFileSync(filenameBase, 'utf8').split('\n')
       // Se recorre el array
-      data.forEach((invoice) => invoice !== '' && invoices.push(parseInt(invoice, 10)))
+      data.forEach((invoice) => invoice !== '' && invoices.push(invoice))
     }
     return invoices
   }
@@ -45,26 +45,24 @@ class filesRepository {
 
   static getInvoicesNotFound() {
     const invoices = this.getInvoices()
+    const filenames = fs.readdirSync('.')
 
-    return fs.readdir('.', (err, filenames) => {
-      filenames.forEach((filename) => {
-        if (filename.match(/[0-9].json/)) {
-          const filenameTemp = parseInt(filename.replace(/.json/, ''), 10)
-          // Valida si existe el id en el array
-          if (invoices.includes(filenameTemp)) {
-            // Se captura el index del elemento
-            const index = invoices.indexOf(filenameTemp)
-            /*
-            * Se elimina el elemento para dejar
-            * solo los elementos no encontrados
-            */
-            invoices.splice(index, 1)
-          }
+    filenames.forEach((filename) => {
+      if (filename.match(/[0-9].json/)) {
+        const filenameTemp = parseInt(filename.replace(/.json/, ''), 10)
+        // Valida si existe el id en el array
+        if (invoices.includes(filenameTemp)) {
+          // Se captura el index del elemento
+          const index = invoices.indexOf(filenameTemp)
+          /*
+          * Se elimina el elemento para dejar
+          * solo los elementos no encontrados
+          */
+          invoices.splice(index, 1)
         }
-      })
-      // tmpInvoices.forEach(invoice => delInvoice(invoice))
-      return invoices
+      }
     })
+    return invoices
   }
 
   static createFile(file, content) {
