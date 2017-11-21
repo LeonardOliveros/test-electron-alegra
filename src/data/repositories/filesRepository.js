@@ -4,12 +4,12 @@ const fs = require('fs')
 * Archivo donde se guardaran las facturas
 * que ya no son nuevas
 */
-const filenameBase = 'invoices'
+const filenameBase = 'files/invoices'
 /*
 * Archivo donde se guardaran las facturas
 * que fueron eliminadas en fisico
 */
-const filenameBaseDeleted = 'invoicesDeleted'
+const filenameBaseDeleted = 'files/invoicesDeleted'
 
 class filesRepository {
   // Crea archivo donde se guardaran las facturas
@@ -106,7 +106,7 @@ class filesRepository {
   static getInvoicesNotFound() {
     const invoices = this.getInvoices()
     const invoicesDeleted = this.getInvoicesDeleted()
-    const filenames = fs.readdirSync('.')
+    const filenames = fs.readdirSync('files')
 
     filenames.forEach((filename) => {
       if (filename.match(/[0-9].json/)) {
@@ -138,7 +138,7 @@ class filesRepository {
       * Se crea el archivo que contendra
       * el json de la factura
       */
-      fs.writeFile(file, string, 'utf8', (err) => {
+      fs.writeFile(`files/${file}`, string, 'utf8', (err) => {
         // Si hay error al crear el archivo lo muestra en consola
         if (err) {
           console.log(err)
