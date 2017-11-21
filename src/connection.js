@@ -7,6 +7,7 @@ const credentials = new Buffer(`${config.app.email}:${config.app.token}`).toStri
 const auth = `Basic ${credentials}`
 
 class connection {
+  // Metodo para enviar peticiones al API
   static request(prefix, method, body, callback) {
     return request[method]({
       uri: `${baseUrl}${prefix}`,

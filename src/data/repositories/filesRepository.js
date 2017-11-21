@@ -1,12 +1,20 @@
 const fs = require('fs')
 
+/*
+* Archivo donde se guardaran las facturas
+* que ya no son nuevas
+*/
 const filenameBase = 'invoices'
+/*
+* Archivo donde se guardaran las facturas
+* que fueron eliminadas en fisico
+*/
 const filenameBaseDeleted = 'invoicesDeleted'
 
 class filesRepository {
-  // Obtiene las facturas agregadas al invoices
+  // Crea archivo donde se guardaran las facturas
   static initFileInvoices() {
-    // Validar no si existe el archivo
+    // Verificar no si existe el archivo
     if (!fs.existsSync(filenameBase)) {
       console.log('Creando archivo invoices')
       return fs.writeFile(filenameBase, '', (err) => {
@@ -21,8 +29,12 @@ class filesRepository {
     return true
   }
 
+  /*
+  * Crea el archivo donde se guardaran las
+  * facturas eliminadas
+  */
   static initFileInvoicesDeleted() {
-    // Validar no si existe el archivo
+    // Validar no si existe
     if (!fs.existsSync(filenameBaseDeleted)) {
       console.log('Creando archivo invoicesDeleted')
       return fs.writeFile(filenameBaseDeleted, '', (err) => {
@@ -37,6 +49,7 @@ class filesRepository {
     return true
   }
 
+  // Recuperar las facturas del archivo invoices
   static getInvoices() {
     const invoices = [];
     // Verifica si existe
@@ -49,6 +62,7 @@ class filesRepository {
     return invoices
   }
 
+  // Recuperar las facturas del archivo invoiceDeleted
   static getInvoicesDeleted() {
     const invoicesDeleted = [];
     // Verifica si existe
@@ -61,6 +75,7 @@ class filesRepository {
     return invoicesDeleted
   }
 
+  // Agrega factura al archivo invoices
   static addInvoice(invoiceId) {
     fs.appendFile(filenameBase, `${invoiceId}\n`, (err) => {
       if (err) {
@@ -72,6 +87,7 @@ class filesRepository {
     })
   }
 
+  // Agrega factura al archivo invoiceDeleted
   static delInvoice(invoiceId) {
     fs.appendFile(filenameBaseDeleted, `${invoiceId}\n`, (err) => {
       if (err) {
@@ -83,6 +99,10 @@ class filesRepository {
     })
   }
 
+  /*
+  * Obtiene los archivos de facturas que
+  * fueron eliminadas
+  */
   static getInvoicesNotFound() {
     const invoices = this.getInvoices()
     const invoicesDeleted = this.getInvoicesDeleted()
@@ -106,6 +126,9 @@ class filesRepository {
     return invoices.filter(invoice => !invoicesDeleted.includes(invoice))
   }
 
+  /*
+  * Crea archivo para una nueva factura
+  */
   static createFile(file, content) {
     // Verifica si existe
     if (!fs.existsSync(file)) {
