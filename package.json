@@ -27,5 +27,8 @@
     "dotenv": "^4.0.0",
     "jquery": "^3.2.1",
     "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^19.45.5"
   }
 }
