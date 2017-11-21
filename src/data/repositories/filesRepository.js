@@ -1,19 +1,31 @@
 const fs = require('fs')
 
 /*
+* Carpeta donde se guardan las facturas
+*/
+const folder = 'files'
+/*
 * Archivo donde se guardaran las facturas
 * que ya no son nuevas
 */
-const filenameBase = 'files/invoices'
+const filenameBase = `${folder}/invoices`
 /*
 * Archivo donde se guardaran las facturas
 * que fueron eliminadas en fisico
 */
-const filenameBaseDeleted = 'files/invoicesDeleted'
+const filenameBaseDeleted = `${folder}/invoicesDeleted`
 
 class filesRepository {
+  static makeFolder(name) {
+    if (!fs.existsSync(name)) {
+      fs.mkdirSync(name)
+    }
+    return true
+  }
+
   // Crea archivo donde se guardaran las facturas
   static initFileInvoices() {
+    this.makeFolder(folder)
     // Verificar no si existe el archivo
     if (!fs.existsSync(filenameBase)) {
       console.log('Creando archivo invoices')
@@ -34,6 +46,7 @@ class filesRepository {
   * facturas eliminadas
   */
   static initFileInvoicesDeleted() {
+    this.makeFolder(folder)
     // Validar no si existe
     if (!fs.existsSync(filenameBaseDeleted)) {
       console.log('Creando archivo invoicesDeleted')
