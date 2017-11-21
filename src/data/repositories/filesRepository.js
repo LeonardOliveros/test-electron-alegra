@@ -1,6 +1,7 @@
 const fs = require('fs')
 
 const filenameBase = 'invoices'
+const filenameBaseDeleted = 'invoicesDeleted'
 
 class filesRepository {
   // Obtiene las facturas agregadas al invoices
@@ -20,6 +21,22 @@ class filesRepository {
     return true
   }
 
+  static initFileInvoicesDeleted() {
+    // Validar no si existe el archivo
+    if (!fs.existsSync(filenameBaseDeleted)) {
+      console.log('Creando archivo invoicesDeleted')
+      return fs.writeFile(filenameBaseDeleted, '', (err) => {
+        if (err) {
+          throw err
+        }
+        return true
+      })
+    }
+    // Ya existe el archivo
+    console.log('Ya existe archivo invoicesDeleted')
+    return true
+  }
+
   static getInvoices() {
     const invoices = [];
     // Verifica si existe
@@ -30,6 +47,18 @@ class filesRepository {
       data.forEach((invoice) => invoice !== '' && invoices.push(invoice))
     }
     return invoices
+  }
+
+  static getInvoicesDeleted() {
+    const invoicesDeleted = [];
+    // Verifica si existe
+    if (fs.existsSync(filenameBaseDeleted)) {
+      // Se lee el archivo y se convierte en array
+      const data = fs.readFileSync(filenameBaseDeleted, 'utf8').split('\n')
+      // Se recorre el array
+      data.forEach(invoiceDeleted => invoiceDeleted !== '' && invoicesDeleted.push(invoiceDeleted))
+    }
+    return invoicesDeleted
   }
 
   static addInvoice(invoiceId) {
@@ -43,13 +72,25 @@ class filesRepository {
     })
   }
 
+  static delInvoice(invoiceId) {
+    fs.appendFile(filenameBaseDeleted, `${invoiceId}\n`, (err) => {
+      if (err) {
+        console.log(err)
+        return false
+      }
+      console.log('Agregada factura al invoicesDeleted')
+      return true
+    })
+  }
+
   static getInvoicesNotFound() {
     const invoices = this.getInvoices()
+    const invoicesDeleted = this.getInvoicesDeleted()
     const filenames = fs.readdirSync('.')
 
     filenames.forEach((filename) => {
       if (filename.match(/[0-9].json/)) {
-        const filenameTemp = parseInt(filename.replace(/.json/, ''), 10)
+        const filenameTemp = filename.replace(/.json/, '')
         // Valida si existe el id en el array
         if (invoices.includes(filenameTemp)) {
           // Se captura el index del elemento
@@ -62,7 +103,7 @@ class filesRepository {
         }
       }
     })
-    return invoices
+    return invoices.filter(invoice => !invoicesDeleted.includes(invoice))
   }
 
   static createFile(file, content) {
