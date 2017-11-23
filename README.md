@@ -1,7 +1,7 @@
 ## Estructura del Proyecto
 - src -> Contiene todos los archivos principales
   - config
-    - index.js -> COntiene las variables de entorno
+    - **index.js** -> Contiene las variables de entorno
   - data -> contiene las class que hacen el funcionamiento de la aplicacion
     - repositories
       - **filesRepository.js** -> Class encargada de crear, modificar, eliminar y leer los archivos fisicos
@@ -17,7 +17,7 @@
 ## Requisitos para el Auth de la API de Alegra.com
 
 * Crear cuenta free [aqui](https://www.alegra.com/)
-* Generar token [aqui ](https://app.alegra.com/configuration/api)
+* Generar token [aqui](https://app.alegra.com/configuration/api)
 
 Debe crear el archivo **.env** apartir del **.env.example** en el cual debe configurar las siguientes variables:
 ```
