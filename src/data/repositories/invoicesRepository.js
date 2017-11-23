@@ -19,9 +19,12 @@ class invoicesRepository {
       // Filtra las facturas para solo dejar las nuevas
       const newInvoices = invoicesAPI.filter(invoice => !invoices.includes(invoice.id))
 
-      // Crea los archivos de las nuevas facturas
-      newInvoices.forEach(invoice2 => filesRepository.createFile(`${invoice2.id}.json`, invoice2))
-      callback(null, newInvoices)
+      if (newInvoices.length > 0) {
+        // Crea los archivos de las nuevas facturas
+        newInvoices.forEach(invoice2 => filesRepository.createFile(`${invoice2.id}.json`, invoice2))
+        callback(null, newInvoices)
+      }
+      callback(null, [])
     })
   }
 
