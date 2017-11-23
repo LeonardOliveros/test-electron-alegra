@@ -4,6 +4,7 @@
   "description": "Prueba para seleccion de Alegra con Framework Electron",
   "main": "main.js",
   "scripts": {
+    "postinstall": "install-app-deps",
     "start": "electron .",
     "pack": "build --dir",
     "dist": "build"
@@ -17,7 +18,35 @@
     "electron",
     "api"
   ],
-  "author": "Leonardo Oliveros",
+  "build": {
+    "appId": "test_electron_alegra",
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "author": "Leonardo Oliveros <leonardoliveros.lo@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LeonardOliveros/test-electron-alegra/issues"
@@ -30,6 +59,7 @@
     "request": "^2.83.0"
   },
   "devDependencies": {
+    "electron": "^1.7.9",
     "electron-builder": "^19.45.5"
   }
 }
