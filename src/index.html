@@ -9,11 +9,22 @@
         margin-top: 50px;
         margin-bottom: 50px;
       }
+      #outputDir {
+        display: none;
+      }
+      #divDirectory {
+        margin-top: 50px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
+      <div id="divDirectory" class="form-group text-center hidden">
+        <button type="button" class="btn btn-primary" id="btnSelectDirectory">Seleccionar directorio para almacenar las facturas</label>
+        <input type="file" id="outputDir" class="btn btn-primary btn-fill" webkitdirectory="" directory=""/>
+      </div>
       <div id="divButtons" class="text-center">
+        <button class="btn btn-primary" id="btnChange">Cambiar Directorio</button>
         <button class="btn btn-primary" id="start">Comenzar</button>
         <button class="btn btn-danger hidden" id="stop">Terminar</button>
       </div>
