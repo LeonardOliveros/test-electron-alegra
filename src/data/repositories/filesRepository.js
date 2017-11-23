@@ -17,7 +17,7 @@ const filenameBase = `invoices`
 * Archivo donde se guardaran las facturas
 * que fueron eliminadas en fisico
 */
-const filenameBaseDeleted = `invoicesDeleted`
+const filenameBaseDeleted = `deleted`
 
 let dir
 
@@ -69,7 +69,7 @@ class filesRepository {
       })
     }
     // Ya existe el archivo
-    console.log('Ya existe archivo invoicesDeleted')
+    console.log('Ya existe archivo deleted')
     return true
   }
 
@@ -120,7 +120,7 @@ class filesRepository {
         console.log(err)
         return false
       }
-      console.log('Agregada factura al invoicesDeleted')
+      console.log('Agregada factura al deleted')
       return true
     })
   }
