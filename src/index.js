@@ -1,12 +1,16 @@
 const $ = require('jquery')
 const fs = require('fs')
 
-let intervalId
-
 const invoicesRepository = require('./data/repositories/invoicesRepository')
 const filesRepository = require('./data/repositories/filesRepository')
 
+let intervalId
+
+// Crea carpetas por defecto
+filesRepository.createFolders()
+// Crea archivo invoices
 filesRepository.initFileInvoices()
+// Crea archivo invoicesDeleted
 filesRepository.initFileInvoicesDeleted()
 
 // Crea intervalo de 3 min para consultar el API

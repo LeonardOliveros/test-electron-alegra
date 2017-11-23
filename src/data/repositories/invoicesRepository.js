@@ -8,6 +8,8 @@ class invoicesRepository {
   static getInvoices(callback) {
     this.checkedInvoicesDelete()
     return connection.request(prefix, 'get', null, (err, res) => {
+      const invoicesAPI = res || []
+
       if (err) {
         callback(err, null)
       }
@@ -15,7 +17,7 @@ class invoicesRepository {
       // Recupera las facturas del archivo invoices
       const invoices = filesRepository.getInvoices()
       // Filtra las facturas para solo dejar las nuevas
-      const newInvoices = res.filter(invoice => !invoices.includes(invoice.id))
+      const newInvoices = invoicesAPI.filter(invoice => !invoices.includes(invoice.id))
 
       // Crea los archivos de las nuevas facturas
       newInvoices.forEach(invoice2 => filesRepository.createFile(`${invoice2.id}.json`, invoice2))
