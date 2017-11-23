@@ -54,7 +54,7 @@ $('#stop').on('click', () => {
   stop()
 })
 
-$('#btnSelectDirectory, #btnChange').on('click', () => {
+$('#btnSelectDirectory').on('click', () => {
   $('#outputDir')[0].click()
 })
 
