@@ -5,9 +5,10 @@ const fs = require('fs')
 */
 const folderDefault = 'files'
 /*
-* Carpeta donde se guardan las facturas
+* Archivo donde se guardaran las facturas
+* que fueron eliminadas en fisico
 */
-const folderInvoices = 'invoices'
+const filenameConfig = `config`
 /*
 * Archivo donde se guardara la ruta
 * donde se almacenaran las facturas
@@ -19,7 +20,7 @@ const filenameBase = `invoices`
 */
 const filenameBaseDeleted = `deleted`
 
-let dir
+let dirInvoices
 
 class filesRepository {
   static makeFolder(name) {
@@ -29,9 +30,26 @@ class filesRepository {
     return true
   }
 
-  static createFolders() {
+  static createFolderDefault() {
     this.makeFolder(folderDefault)
-    this.makeFolder(folderInvoices)
+  }
+
+  // Crea archivo donde se guardara el directorio de las facturas
+  static initFileConfig() {
+    const file = `${folderDefault}/${filenameConfig}`
+    // Verificar no si existe el archivo
+    if (!fs.existsSync(file)) {
+      return fs.writeFile(file, '', (err) => {
+        if (err) {
+          throw err
+        }
+        console.log('Creando archivo config')
+        return true
+      })
+    }
+    // Ya existe el archivo
+    console.log('Ya existe archivo config')
+    return true
   }
 
   // Crea archivo donde se guardaran las facturas
@@ -39,11 +57,11 @@ class filesRepository {
     const file = `${folderDefault}/${filenameBase}`
     // Verificar no si existe el archivo
     if (!fs.existsSync(file)) {
-      console.log('Creando archivo invoices')
       return fs.writeFile(file, '', (err) => {
         if (err) {
           throw err
         }
+        console.log('Creando archivo invoices')
         return true
       })
     }
@@ -60,11 +78,11 @@ class filesRepository {
     const file = `${folderDefault}/${filenameBaseDeleted}`
     // Validar no si existe
     if (!fs.existsSync(file)) {
-      console.log('Creando archivo invoicesDeleted')
       return fs.writeFile(file, '', (err) => {
         if (err) {
           throw err
         }
+        console.log('Creando archivo invoicesDeleted')
         return true
       })
     }
@@ -80,7 +98,7 @@ class filesRepository {
     // Verifica si existe
     if (fs.existsSync(file)) {
       // Se lee el archivo y se convierte en array
-      const data = fs.readFileSync(file, 'utf8').split('\n')
+      const data = fs.readFileSync(file, 'utf8').split(',')
       // Se recorre el array
       data.forEach((invoice) => invoice !== '' && invoices.push(invoice))
     }
@@ -94,7 +112,7 @@ class filesRepository {
     // Verifica si existe
     if (fs.existsSync(file)) {
       // Se lee el archivo y se convierte en array
-      const data = fs.readFileSync(file, 'utf8').split('\n')
+      const data = fs.readFileSync(file, 'utf8').split(',')
       // Se recorre el array
       data.forEach(invoiceDeleted => invoiceDeleted !== '' && invoicesDeleted.push(invoiceDeleted))
     }
@@ -103,7 +121,7 @@ class filesRepository {
 
   // Agrega factura al archivo invoices
   static addInvoice(invoiceId) {
-    fs.appendFile(`${folderDefault}/${filenameBase}`, `${invoiceId}\n`, (err) => {
+    fs.appendFile(`${folderDefault}/${filenameBase}`, `${invoiceId},`, (err) => {
       if (err) {
         console.log(err)
         return false
@@ -115,7 +133,7 @@ class filesRepository {
 
   // Agrega factura al archivo invoiceDeleted
   static delInvoice(invoiceId) {
-    fs.appendFile(`${folderDefault}/${filenameBaseDeleted}`, `${invoiceId}\n`, (err) => {
+    fs.appendFile(`${folderDefault}/${filenameBaseDeleted}`, `${invoiceId},`, (err) => {
       if (err) {
         console.log(err)
         return false
@@ -132,7 +150,7 @@ class filesRepository {
   static getInvoicesNotFound() {
     const invoices = this.getInvoices()
     const invoicesDeleted = this.getInvoicesDeleted()
-    const filenames = fs.readdirSync(folderInvoices)
+    const filenames = fs.readdirSync(dirInvoices)
 
     filenames.forEach((filename) => {
       if (filename.match(/[0-9].json/)) {
@@ -157,7 +175,7 @@ class filesRepository {
   */
   static createFile(invoiceId, content) {
     // Verifica si existe
-    const file = `${folderInvoices}/${invoiceId}`
+    const file = `${dirInvoices}/${invoiceId}`
     if (!fs.existsSync(file)) {
       // Se parsea el object a string
       const string = JSON.stringify(content)
@@ -178,6 +196,49 @@ class filesRepository {
         return true
       })
     }
+  }
+
+  /*
+  * Obtener el directorio para almacenar las facturas
+  */
+  static getConfig() {
+    // Verifica si existe
+    const file = `${folderDefault}/${filenameConfig}`
+    if (fs.existsSync(file)) {
+      // Se obtiene el contenido del archivo
+      const data = fs.readFileSync(file, 'utf8').split('\n')
+      dirInvoices = data[0]
+      return dirInvoices
+    }
+    return false
+  }
+
+  /*
+  * Setear el directorio para almacenar las facturas
+  */
+  static setConfig(directory) {
+    // Verifica si existe
+    if (fs.existsSync(`${folderDefault}/${filenameConfig}`)) {
+      /*
+      * Se crea el archivo que contendra
+      * el directorio de las facturas
+      */
+      fs.writeFile(`${folderDefault}/${filenameConfig}`, directory, 'utf8', (err) => {
+        // Si hay error al crear el archivo lo muestra en consola
+        if (err) {
+          console.log(err)
+          return false
+        }
+        dirInvoices = directory
+      })
+      // Se seteo el directorio de las facturas
+      console.log(`Directorio seteado: ${directory}`)
+      return true
+    }
+    // Si no existe, se crean
+    this.makeFolder(folderDefault)
+    this.initFileConfig()
+    this.setConfig(directory)
   }
 }
 
