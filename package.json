@@ -1,13 +1,14 @@
 {
   "name": "test-electron-alegra",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Prueba para seleccion de Alegra con Framework Electron",
   "main": "main.js",
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron .",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build",
+    "distwin64": "build --win --x64"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,9 @@
     "api"
   ],
   "build": {
+    "productName": "TEST - Alegra",
     "appId": "test_electron_alegra",
-    "asar": true,
+    "owner": "Soluciones Alegra S.A.S.",
     "dmg": {
       "contents": [
         {
@@ -42,7 +44,7 @@
       ]
     },
     "win": {
-      "target": "NSIS",
+      "target": ["squirrel", "nsis"],
       "icon": "build/icon.ico"
     }
   },
@@ -53,13 +55,17 @@
   },
   "homepage": "https://github.com/LeonardOliveros/test-electron-alegra#readme",
   "dependencies": {
+    "auto-updater": "^1.0.2",
     "bootstrap": "^3.3.7",
     "dotenv": "^4.0.0",
+    "electron-builder-squirrel-windows": "^19.52.0",
+    "electron-is-dev": "^0.3.0",
+    "electron-squirrel-startup": "^1.0.0",
     "jquery": "^3.2.1",
     "request": "^2.83.0"
   },
   "devDependencies": {
     "electron": "^1.7.9",
-    "electron-builder": "^19.45.5"
+    "electron-builder": "^19.52.1"
   }
 }
