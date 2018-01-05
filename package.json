@@ -7,7 +7,7 @@
     "node": "8.9.x"
   },
   "scripts": {
-    "postinstall": "install-app-deps",
+    "postinstall": "npm install",
     "start": "electron .",
     "pack": "build --dir",
     "dist": "build",
