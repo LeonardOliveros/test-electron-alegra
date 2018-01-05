@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "Prueba para seleccion de Alegra con Framework Electron",
   "main": "main.js",
+  "engines": {
+    "node": "8.9.x"
+  },
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron .",
@@ -22,7 +25,6 @@
   "build": {
     "productName": "TEST - Alegra",
     "appId": "test_electron_alegra",
-    "owner": "Soluciones Alegra S.A.S.",
     "dmg": {
       "contents": [
         {

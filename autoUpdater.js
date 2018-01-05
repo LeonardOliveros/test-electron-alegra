@@ -14,29 +14,30 @@ function appUpdater() {
   You could alsoe use nslog or other logging to see what's happening */
   autoUpdater.on('error', (err) => {
     console.log(err)
+    /*const e = JSON.stringify(err);
     dialog.showMessageBox({
-      type: 'question',
-      message: 'err'
-    })
+      type: 'info',
+      message: e
+    })*/
   });
   autoUpdater.on('checking-for-update', () => {
     console.log('checking-for-update')
     dialog.showMessageBox({
-      type: 'question',
+      type: 'info',
       message: 'checking-for-update'
     })
   });
   autoUpdater.on('update-available', () => {
     console.log('update-available')
     dialog.showMessageBox({
-      type: 'question',
+      type: 'info',
       message: 'update-available'
     })
   });
   autoUpdater.on('update-not-available', () => {
     console.log('update-not-available')
     dialog.showMessageBox({
-      type: 'question',
+      type: 'info',
       message: 'update-not-available'
     })
   });
