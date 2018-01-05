@@ -1,6 +1,6 @@
 {
   "name": "test-electron-alegra",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Prueba para seleccion de Alegra con Framework Electron",
   "main": "main.js",
   "engines": {
